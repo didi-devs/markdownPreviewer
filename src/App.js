@@ -1,18 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+ 
+import Preview from "./Preview.js";
+import './index.css'
+
+marked.setOptions({
+  breaks: true,
+});
+
+const renderer = new marked.Renderer();
 
 function App() {
+  const { text, setText } = React.useState("");
+
   return (
-    <div>
-      <h1>Convert your Markdown</h1>
-      <div className="row"></div>
-      <div className="col-6">
-        <textarea id='editor'/>
-      </div>
-      <div className="col-6"></div>
+    <div className="text-center px-4">
+      <h1 className="p-4">My Markdown Previewer</h1>
+      <textarea
+        name="text"
+        id="text"
+        rows="10"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        className="textarea"
+      ></textarea>
+      <h3 className="mt-3">Output</h3>
+      <Preview markdown={text} />
     </div>
   );
 }
+
+function Preview({ markdown }) {
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: marked(markdown, { renderer: renderer }),
+      }}
+      id="preview"
+    ></div>
+  );
+}
+
+//ReactDOM.render(<App />, document.getElementById("root"));//
 
 
 export default App;
